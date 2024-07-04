@@ -1,20 +1,26 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import {SafeAreaView} from 'react-native';
+import {SafeAreaProvider} from 'react-native-safe-area-context';
+import {NavigationContainer} from '@react-navigation/native';
+import {LoginAndRegisterNavigator,} from './src/principalPage/navigate/StackNavigate';
+import {AuthProvider} from './src/principalPage/login/providers/AuthProvider';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
-export default function App() {
+const queryCLient = new QueryClient();
+
+function App(): JSX.Element {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <QueryClientProvider client={queryCLient}>
+      <NavigationContainer>
+        <SafeAreaProvider>
+          <SafeAreaView style={{flex: 1}}>
+            <AuthProvider>
+              <LoginAndRegisterNavigator />
+            </AuthProvider>
+          </SafeAreaView>
+        </SafeAreaProvider>
+      </NavigationContainer>
+    </QueryClientProvider>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default App;
